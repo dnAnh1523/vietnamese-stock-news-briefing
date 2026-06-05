@@ -1,0 +1,4 @@
+[build]
+  base = "frontend"
+  publish = "."
+  command = "printf \"window.API_BASE_URL = '%s';\\n\" \"$API_BASE_URL\" > js/config.js"

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stock Briefing</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="glow-orb"></div>
+
+<main>
+  <header>
+    <div class="badge">
+      <span class="badge-dot"></span>
+      AI-powered · Live data
+    </div>
+    <h1>Vietnamese Stock<br><em>News Briefing</em></h1>
+    <p class="subtitle">Phân tích tin tức 7 ngày gần nhất cho bất kỳ mã cổ phiếu nào trên HOSE, HNX, UPCOM.</p>
+  </header>
+
+  <div class="search-wrap">
+    <input
+      class="ticker-input"
+      id="tickerInput"
+      type="text"
+      placeholder="Nhập mã cổ phiếu — HPG, VNM, FPT..."
+      maxlength="10"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">
+      <span class="spinner"></span>
+      <span class="btn-text">Phân tích →</span>
+    </button>
+  </div>
+
+  <div class="error-box" id="errorBox"></div>
+
+  <div id="result">
+    <div class="report-header">
+      <div>
+        <div class="ticker-display" id="rTicker"></div>
+        <div class="period-display" id="rPeriod"></div>
+      </div>
+      <div class="impact-badge" id="rImpact"></div>
+    </div>
+
+    <div class="summary-block" id="rSummary"></div>
+
+    <div class="section-wrap">
+      <div class="section-label">Sự kiện nổi bật</div>
+      <div class="card">
+        <ul class="event-list" id="rEvents"></ul>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div>
+        <div class="section-label">Rủi ro</div>
+        <div class="card">
+          <ul class="flag-list risk-list" id="rRisks"></ul>
+        </div>
+      </div>
+      <div>
+        <div class="section-label">Cơ hội</div>
+        <div class="card">
+          <ul class="flag-list opp-list" id="rOpps"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>Vietnamese Stock News Briefing · Powered by LangGraph + Groq · Dữ liệu từ CafeF</footer>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
