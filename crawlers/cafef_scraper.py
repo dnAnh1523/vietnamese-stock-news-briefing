@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 
 logger = logging.getLogger(__name__)
 
+LIST_TIMEOUT_SECONDS = (3.05, 15)
+ARTICLE_TIMEOUT_SECONDS = (3.05, 12)
+
 
 class CafeFScraper:
     def __init__(self, ticker, pagesize=20):
@@ -36,20 +39,20 @@ class CafeFScraper:
                         "pageIndex": 1,
                         "pageSize": self.pagesize,
                     },
-                    timeout=10,
+                    timeout=LIST_TIMEOUT_SECONDS,
                 )
                 response.raise_for_status()
                 data = response.json()
-                if data["Success"]:
-                    all_articles.extend(data["Data"])
-            except requests.RequestException as e:
+                if data.get("Success"):
+                    all_articles.extend(data.get("Data", []))
+            except (requests.RequestException, ValueError) as e:
                 logger.warning("Error fetching NewsType %s for %s: %s", news_type, self.ticker, e)
         return all_articles
 
     def get_article_content(self, link_detail):
         url = "https://cafef.vn" + link_detail.split("?")[0]
         try:
-            response = self.session.get(url, timeout=10)
+            response = self.session.get(url, timeout=ARTICLE_TIMEOUT_SECONDS)
             response.raise_for_status()
         except requests.RequestException as e:
             logger.warning("Error fetching article %s: %s", url, e)
@@ -67,8 +70,11 @@ class CafeFScraper:
         cutoff = datetime.now(timezone.utc) - timedelta(days=days)
         filtered = []
         for article in articles:
-            timestamp_ms = int(article["DeployDate"].replace("/Date(", "").replace(")/", ""))
-            deploy_date = datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
-            if deploy_date >= cutoff:
-                filtered.append(article)
+            try:
+                timestamp_ms = int(article["DeployDate"].replace("/Date(", "").replace(")/", ""))
+                deploy_date = datetime.fromtimestamp(timestamp_ms / 1000, tz=timezone.utc)
+                if deploy_date >= cutoff:
+                    filtered.append(article)
+            except (KeyError, TypeError, ValueError) as e:
+                logger.warning("Skipping article with invalid DeployDate for %s: %s", self.ticker, e)
         return filtered
