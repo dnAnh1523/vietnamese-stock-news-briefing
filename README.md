@@ -41,7 +41,7 @@ An AI-assisted briefing tool for Vietnamese equities. Enter a ticker symbol and 
 
 ## Architecture
 
-![Vietnamese Stock News Briefing architecture](docs/architecture.svg)
+![Vietnamese Stock News Briefing architecture](docs/architecture.png)
 
 | Step | Responsibility |
 | --- | --- |
