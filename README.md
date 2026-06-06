@@ -41,25 +41,7 @@ An AI-assisted briefing tool for Vietnamese equities. Enter a ticker symbol and 
 
 ## Architecture
 
-```text
-Browser UI (Netlify or FastAPI static files)
-        |
-        v
-POST /analyze?ticker=HPG
-        |
-        v
-FastAPI route validation
-        |
-        v
-LangGraph workflow
-  |-- Scraper Agent  -> CafeF news
-  |-- Price Agent    -> vnstock price context
-  |-- Analyst Agent  -> Groq LLM reasoning
-  `-- Report Agent   -> normalized JSON response
-        |
-        v
-Frontend renders the briefing
-```
+![Vietnamese Stock News Briefing architecture](docs/architecture.svg)
 
 | Step | Responsibility |
 | --- | --- |

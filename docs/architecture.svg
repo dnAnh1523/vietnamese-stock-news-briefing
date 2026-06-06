@@ -1,0 +1,134 @@
+<svg width="1120" height="640" viewBox="0 0 1120 640" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Vietnamese Stock News Briefing Architecture</title>
+  <desc id="desc">System architecture showing the Netlify frontend, Render FastAPI backend, LangGraph workflow, external data sources, and JSON response.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1120" y2="640" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#2DD4BF"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#A78BFA"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <linearGradient id="amber" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FBBF24"/>
+      <stop offset="1" stop-color="#F59E0B"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#020617" flood-opacity="0.34"/>
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,5 L0,10 z" fill="#94A3B8"/>
+    </marker>
+    <style>
+      .title { font: 700 30px Inter, Segoe UI, Arial, sans-serif; fill: #F8FAFC; }
+      .subtitle { font: 500 15px Inter, Segoe UI, Arial, sans-serif; fill: #CBD5E1; }
+      .section { font: 700 13px Inter, Segoe UI, Arial, sans-serif; fill: #93C5FD; letter-spacing: 0.08em; }
+      .card-title { font: 700 18px Inter, Segoe UI, Arial, sans-serif; fill: #F8FAFC; }
+      .card-body { font: 500 13px Inter, Segoe UI, Arial, sans-serif; fill: #CBD5E1; }
+      .pill-text { font: 700 12px Inter, Segoe UI, Arial, sans-serif; fill: #0F172A; }
+      .small { font: 600 12px Inter, Segoe UI, Arial, sans-serif; fill: #E2E8F0; }
+      .tiny { font: 500 11px Inter, Segoe UI, Arial, sans-serif; fill: #94A3B8; }
+      .card { fill: #1E293B; stroke: #334155; stroke-width: 1.3; }
+      .lane { fill: rgba(15, 23, 42, 0.68); stroke: #334155; stroke-width: 1.2; }
+      .arrow { stroke: #94A3B8; stroke-width: 2.4; marker-end: url(#arrow); }
+      .return { stroke: #2DD4BF; stroke-width: 2.4; marker-end: url(#arrow); stroke-dasharray: 7 7; }
+    </style>
+  </defs>
+
+  <rect width="1120" height="640" rx="26" fill="url(#bg)"/>
+  <circle cx="1005" cy="78" r="155" fill="#2563EB" opacity="0.10"/>
+  <circle cx="128" cy="570" r="145" fill="#14B8A6" opacity="0.10"/>
+
+  <text x="56" y="64" class="title">Vietnamese Stock News Briefing</text>
+  <text x="56" y="92" class="subtitle">AI-powered news and market-context analysis for Vietnamese equities</text>
+
+  <rect x="56" y="128" width="1008" height="132" rx="18" class="lane"/>
+  <text x="82" y="158" class="section">CLIENT AND API EDGE</text>
+
+  <g filter="url(#shadow)">
+    <rect x="92" y="178" width="210" height="58" rx="14" fill="url(#teal)"/>
+    <text x="126" y="201" class="pill-text">Frontend UI</text>
+    <text x="126" y="221" class="pill-text">Netlify / Static HTML</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="418" y="174" width="282" height="66" rx="16" class="card"/>
+    <text x="446" y="200" class="card-title">POST /analyze</text>
+    <text x="446" y="222" class="card-body">FastAPI validation and request orchestration</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="820" y="178" width="208" height="58" rx="14" fill="url(#blue)"/>
+    <text x="858" y="201" class="pill-text">Render Backend</text>
+    <text x="858" y="221" class="pill-text">Uvicorn + FastAPI</text>
+  </g>
+
+  <path d="M303 207 H408" class="arrow"/>
+  <path d="M701 207 H810" class="arrow"/>
+
+  <rect x="56" y="300" width="1008" height="238" rx="18" class="lane"/>
+  <text x="82" y="330" class="section">LANGGRAPH WORKFLOW</text>
+
+  <g filter="url(#shadow)">
+    <rect x="92" y="360" width="190" height="96" rx="16" class="card"/>
+    <rect x="112" y="380" width="42" height="42" rx="11" fill="url(#amber)"/>
+    <text x="170" y="393" class="card-title">Scraper Agent</text>
+    <text x="170" y="416" class="card-body">CafeF article list</text>
+    <text x="170" y="435" class="card-body">and content fetch</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="332" y="360" width="190" height="96" rx="16" class="card"/>
+    <rect x="352" y="380" width="42" height="42" rx="11" fill="url(#teal)"/>
+    <text x="410" y="393" class="card-title">Price Agent</text>
+    <text x="410" y="416" class="card-body">Ticker validation</text>
+    <text x="410" y="435" class="card-body">and price context</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="572" y="360" width="190" height="96" rx="16" class="card"/>
+    <rect x="592" y="380" width="42" height="42" rx="11" fill="url(#violet)"/>
+    <text x="650" y="393" class="card-title">Analyst Agent</text>
+    <text x="650" y="416" class="card-body">Groq reasoning</text>
+    <text x="650" y="435" class="card-body">with strict prompts</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="812" y="360" width="190" height="96" rx="16" class="card"/>
+    <rect x="832" y="380" width="42" height="42" rx="11" fill="url(#blue)"/>
+    <text x="890" y="393" class="card-title">Report Agent</text>
+    <text x="890" y="416" class="card-body">Normalize JSON</text>
+    <text x="890" y="435" class="card-body">for API response</text>
+  </g>
+
+  <path d="M282 408 H322" class="arrow"/>
+  <path d="M522 408 H562" class="arrow"/>
+  <path d="M762 408 H802" class="arrow"/>
+  <path d="M908 456 C908 500 668 508 668 462" class="return"/>
+  <text x="694" y="501" class="tiny">retry or enrich context when needed</text>
+
+  <path d="M924 238 V306" class="arrow"/>
+  <path d="M924 456 V510 H560 V562" class="return"/>
+
+  <rect x="56" y="558" width="1008" height="54" rx="16" fill="#0F172A" stroke="#334155" stroke-width="1.2"/>
+  <text x="86" y="591" class="small">Output:</text>
+  <text x="148" y="591" class="card-body">ticker, period, summary, key events, impact level, risk flags, opportunity flags</text>
+
+  <g>
+    <rect x="82" y="480" width="130" height="34" rx="17" fill="#334155"/>
+    <text x="112" y="502" class="small">CafeF</text>
+    <rect x="340" y="480" width="130" height="34" rx="17" fill="#334155"/>
+    <text x="369" y="502" class="small">vnstock</text>
+    <rect x="602" y="480" width="130" height="34" rx="17" fill="#334155"/>
+    <text x="646" y="502" class="small">Groq</text>
+  </g>
+</svg>
