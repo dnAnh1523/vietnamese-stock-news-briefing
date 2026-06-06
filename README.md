@@ -1,80 +1,81 @@
 # Vietnamese Stock News Briefing
 
-An AI-assisted briefing tool for Vietnamese equities. The application gathers recent company news, enriches it with market data, and returns a structured impact briefing for a requested stock ticker.
+[![Python](https://img.shields.io/badge/Python-3.11+-3776ab?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![LangGraph](https://img.shields.io/badge/LangGraph-Agentic_Workflow-1f6feb?style=flat-square)](https://langchain-ai.github.io/langgraph/)
+[![Netlify](https://img.shields.io/badge/Netlify-Live_UI-00c7b7?style=flat-square&logo=netlify&logoColor=white)](https://vsnb.netlify.app)
 
-The project is designed as a small production-style full-stack system: a FastAPI backend, a static frontend, an agentic analysis pipeline, deployment configuration for Render and Netlify, and automated tests for the core API/agent behavior.
+An AI-assisted briefing tool for Vietnamese equities. Enter a ticker symbol and the app gathers recent company news, enriches it with price context, and returns a structured impact briefing with key events, risks, and opportunities.
 
-## Live Demo
+**Live demo:** [vsnb.netlify.app](https://vsnb.netlify.app)  
+**Backend health:** [Render API health check](https://vietnamese-stock-news-briefing-api.onrender.com/health)
 
-- Frontend: https://vsnb.netlify.app
-- Backend health check: https://vietnamese-stock-news-briefing-api.onrender.com/health
+> [!NOTE]
+> Render's free tier may cold-start after inactivity, so the first request can take longer than usual.
 
-Render's free tier may cold-start after a period of inactivity, so the first request can take longer than usual.
+> [!IMPORTANT]
+> This project is an information summarization aid, not financial advice.
 
-## What It Does
+## Features
 
-- Validates Vietnamese stock tickers against HOSE, HNX, and UPCOM data.
-- Scrapes recent stock-related news from CafeF.
-- Fetches recent price context with `vnstock`.
-- Uses a LangGraph workflow to coordinate scraping, price lookup, LLM analysis, and report formatting.
-- Produces a structured JSON briefing with summary, key events, impact level, risks, and opportunities.
-- Provides a lightweight web UI deployable as static files.
-
-## Why This Project Matters
-
-Stock news is noisy. A retail investor often needs to know not just what happened, but whether the event is likely to matter in the short term.
-
-This project demonstrates:
-
-- Agent orchestration with conditional routing and retries.
-- Real-world data ingestion from third-party sources.
-- LLM prompting for constrained financial analysis.
-- API design with validation, typed response models, and error handling.
-- Deployment-aware full-stack configuration for free hosting platforms.
-- Automated tests around routes, agents, and market-data helpers.
-
-This is not financial advice. The output is intended as an information summarization aid.
+- Validate Vietnamese stock tickers against HOSE, HNX, and UPCOM data.
+- Collect recent ticker-related news from CafeF.
+- Fetch recent price context with `vnstock`.
+- Coordinate scraping, price lookup, LLM analysis, and report formatting with LangGraph.
+- Return a typed JSON briefing through FastAPI.
+- Serve a lightweight static frontend deployable on Netlify.
+- Cover key API, agent, prompt, and market-data helpers with pytest tests.
 
 ## Tech Stack
 
-| Layer | Technology |
+| Area | Tools |
 | --- | --- |
-| Backend | FastAPI, Uvicorn, Pydantic |
+| Backend API | FastAPI, Uvicorn, Pydantic |
 | Agent workflow | LangGraph |
 | LLM provider | Groq |
-| Market data | vnstock |
-| News source | CafeF |
+| Data sources | CafeF, vnstock |
+| Scraping | requests, BeautifulSoup |
 | Frontend | HTML, CSS, vanilla JavaScript |
 | Testing | pytest, FastAPI TestClient |
-| Deployment | Render, Netlify |
+| Hosting | Render, Netlify |
 
 ## Architecture
 
-```mermaid
-flowchart TD
-    A[User enters ticker] --> B[POST /analyze]
-    B --> C[Validate ticker format]
-    C --> D[Validate ticker via vnstock]
-    D --> E[LangGraph workflow]
-    E --> F[Scraper Agent - CafeF news]
-    F --> G[Analyst Agent - Groq LLM]
-    G -->|needs price data| H[Price Agent - vnstock]
-    H --> G
-    G -->|needs more news| F
-    G --> I[Report Agent]
-    I --> J[Structured briefing JSON]
-    J --> K[Frontend renders report]
+```text
+Browser UI (Netlify or FastAPI static files)
+        |
+        v
+POST /analyze?ticker=HPG
+        |
+        v
+FastAPI route validation
+        |
+        v
+LangGraph workflow
+  |-- Scraper Agent  -> CafeF news
+  |-- Price Agent    -> vnstock price context
+  |-- Analyst Agent  -> Groq LLM reasoning
+  `-- Report Agent   -> normalized JSON response
+        |
+        v
+Frontend renders the briefing
 ```
+
+| Step | Responsibility |
+| --- | --- |
+| API route | Normalizes and validates ticker input, then starts the graph. |
+| Scraper Agent | Retrieves and filters recent CafeF articles for the ticker. |
+| Price Agent | Looks up exchange metadata and recent price movement. |
+| Analyst Agent | Produces evidence-based analysis using the provided news and price context. |
+| Report Agent | Converts model output into the API response schema. |
 
 ## API
 
-### Health Check
+### Health check
 
 ```http
 GET /health
 ```
-
-Example response:
 
 ```json
 {
@@ -83,13 +84,13 @@ Example response:
 }
 ```
 
-### Analyze Ticker
+### Analyze a ticker
 
 ```http
 POST /analyze?ticker=HPG
 ```
 
-Example response shape:
+Response shape:
 
 ```json
 {
@@ -148,7 +149,7 @@ API_HOST=0.0.0.0
 API_PORT=8000
 ```
 
-Run the backend:
+Run the application:
 
 ```bash
 python main.py
@@ -156,9 +157,9 @@ python main.py
 
 Open:
 
-- UI: http://localhost:8000
-- API docs: http://localhost:8000/docs
-- Health check: http://localhost:8000/health
+- UI: <http://localhost:8000>
+- API docs: <http://localhost:8000/docs>
+- Health check: <http://localhost:8000/health>
 
 ## Testing
 
@@ -166,7 +167,7 @@ Open:
 pytest tests/ -v
 ```
 
-The tests cover:
+The test suite covers:
 
 - API health and analysis routes.
 - Ticker validation behavior.
@@ -183,25 +184,25 @@ The tests cover:
 |-- api/                 # FastAPI app, routes, response models
 |-- crawlers/            # CafeF scraper and vnstock fetcher
 |-- frontend/            # Static HTML/CSS/JS interface
-|-- prompts/             # LLM system/user prompts and JSON formatter prompt
+|-- prompts/             # LLM system and formatting prompts
 |-- tests/               # pytest test suite
 |-- main.py              # Local backend entrypoint
-|-- render.yaml          # Render deployment config
-|-- netlify.toml         # Netlify deployment config
+|-- render.yaml          # Render service config
+|-- netlify.toml         # Netlify frontend config
 `-- requirements.txt     # Python dependencies
 ```
 
 ## Current Limitations
 
-- CafeF and vnstock are third-party sources; availability and response format can change.
-- Free-tier hosting may introduce cold starts.
-- The LLM output is constrained and formatted, but it still depends on source quality and model behavior.
-- The application currently uses synchronous scraping calls, which is acceptable for a small demo but should be revisited for heavier traffic.
+- CafeF and vnstock are third-party sources; availability and response formats can change.
+- Free-tier hosting can introduce cold starts.
+- LLM output is constrained and formatted, but still depends on source quality and model behavior.
+- Scraping currently uses synchronous requests, which is acceptable for a small demo but should be revisited for heavier traffic.
 
-## Future Improvements
+## Roadmap
 
 - Add caching for repeated ticker requests.
-- Add CI with automated test runs on pull requests.
+- Add CI for automated test runs on pull requests.
 - Add richer frontend states for cold starts and source-level citations.
-- Add rate limiting and request timeout guards for public deployment.
+- Add request timeout guards and rate limiting for public usage.
 - Expand source coverage beyond CafeF.
